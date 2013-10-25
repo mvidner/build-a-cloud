@@ -70,7 +70,8 @@
      },
      "identity": {
          "verbose": true,
-         "debug": true
+         "debug": true,
+         "bind_interface": "eth0"
      },
      "image": {
          "verbose": true,
