@@ -68,11 +68,68 @@
          "verbose": true,
          "debug": true
      },
-     "identity": {
-         "verbose": true,
-         "debug": true,
-         "bind_interface": "eth0"
-     },
+    "identity" : {
+      "admin_user" : "ksadmin",
+      "bind_interface" : "eth0",
+      "catalog" : {
+        "# backend" : "templated"
+      },
+      "debug" : true,
+      "rabbit_server_chef_role" : "os-ops-messaging",
+      "roles" : [
+        "admin",
+        "keystone_admin",
+        "keystone_service_admin",
+        "member",
+        "netadmin",
+        "sysadmin"
+      ],
+      "syslog" : {
+        "use" : false
+      },
+      "tenants" : [
+        "admin",
+        "service",
+        "demo"
+      ],
+      "token" : {
+        "# backend" : "memcache"
+      },
+      "users" : {
+        "ksadmin" : {
+          "password" : "ksadmin",
+          "default_tenant" : "admin",
+          "roles" : {
+            "admin" : [
+              "admin"
+            ],
+            "keystone_admin" : [
+              "admin"
+            ],
+            "keystone_service_admin" : [
+              "admin"
+            ]
+          }
+        },
+        "demo" : {
+          "password" : "demo",
+          "default_tenant" : "demo",
+          "roles" : {
+            "sysadmin" : [
+              "demo"
+            ],
+            "netadmin" : [
+              "demo"
+            ],
+            "member" : [
+              "demo"
+            ]
+          }
+        }
+      },
+      "verbose": true
+    },
+
      "image": {
          "verbose": true,
          "debug": true
