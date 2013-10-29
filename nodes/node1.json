@@ -54,16 +54,6 @@
             "port": "5432"
         },
         "memcache_servers": ["127.0.0.1:11211"],
-        "# old endpoints": {
-            "identity-api": {"scheme": "http"},
-            "identity-admin": {"scheme": "http"},
-            "compute-api": {"scheme": "http"},
-            "image-api": {"scheme": "http"},
-            "image-registry": {"scheme": "http"},
-            "metering-api": {"scheme": "http"},
-            "volume-api": {"scheme": "http"},
-            "network-api": {"scheme": "http"}
-        },
         "endpoints": {
             "compute-api": {
                 "host": "192.168.23.10",
@@ -139,7 +129,14 @@
             }
         },
         "compute": {
-            "network": {"service_type": "quantum"},
+            "libvirt": {
+                "virt_type": "kvm",
+                "bind_interface": "eth0"
+            },
+            "network": {
+                "fixed_range": "192.168.23.128/25",
+                "service_type": "quantum"
+            },
             "verbose": true,
             "debug": true
         },
