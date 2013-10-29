@@ -1,153 +1,394 @@
-{"run_list": [
-    "recipe[chef-solo-search]",
+{
+    "run_list": [
+        "recipe[chef-solo-search]",
 
-    "recipe[postgresql::server]",
-    "recipe[postgresql::client]",
+        "recipe[postgresql::server]",
+        "recipe[postgresql::client]",
 
-    "recipe[openstack-common]",
-    "recipe[openstack-common::logging]",
+        "recipe[openstack-common]",
+        "recipe[openstack-common::logging]",
 
-    "recipe[memcached]",
+        "recipe[memcached]",
 
-    "role[os-ops-messaging]",
-    "role[os-identity]",
+        "role[os-ops-messaging]",
+        "role[os-identity]",
 
-    "recipe[openstack-ops-database::openstack-db]",
-    "recipe[openstack-ops-messaging::server]",
+        "recipe[openstack-ops-database::openstack-db]",
+        "recipe[openstack-ops-messaging::server]",
 
-    "recipe[openstack-identity::server]",
-    "recipe[openstack-identity::registration]",
+        "recipe[openstack-identity::server]",
+        "recipe[openstack-identity::registration]",
 
-    "recipe[openstack-image::identity_registration]",
-    "recipe[openstack-image::api]",
-    "recipe[openstack-image::registry]",
+        "recipe[openstack-image::identity_registration]",
+        "recipe[openstack-image::api]",
+        "recipe[openstack-image::registry]",
 
-    "recipe[openstack-compute::nova-common]",
+        "recipe[openstack-compute::nova-common]",
 
-    "recipe[openstack-compute::identity_registration]",
-    "recipe[openstack-compute::api-metadata]",
-    "recipe[openstack-compute::nova-setup]",
-    "recipe[openstack-compute::conductor]",
-    "recipe[openstack-compute::compute]",
-    "recipe[openstack-compute::api-os-compute]",
-    "recipe[openstack-compute::scheduler]",
-    "recipe[openstack-compute::vncproxy]",
+        "recipe[openstack-compute::identity_registration]",
+        "recipe[openstack-compute::api-metadata]",
+        "recipe[openstack-compute::nova-setup]",
+        "recipe[openstack-compute::conductor]",
+        "recipe[openstack-compute::compute]",
+        "recipe[openstack-compute::api-os-compute]",
+        "recipe[openstack-compute::scheduler]",
+        "recipe[openstack-compute::vncproxy]",
 
-    "recipe[openstack-compute::network]",
+        "recipe[openstack-compute::network]",
 
-    "recipe[openstack-network::identity_registration]",
-    "recipe[openstack-network::server]",
+        "recipe[openstack-network::identity_registration]",
+        "recipe[openstack-network::server]",
 
-    "recipe[openstack-dashboard::server]"
- ],
- "postgresql": {
-     "password": {"postgres": "secret"},
-     "version": "9.2"
- },
- "openstack": {
-     "zypp": {"release": "openSUSE_12.3"},
-     "release": "grizzly",
-     "developer_mode": true,
-     "db": {
-         "service_type": "postgresql",
-         "port": "5432"
-     },
-     "memcache_servers": ["127.0.0.1:11211"],
-     "endpoints": {
-         "identity-api": {"scheme": "http"},
-         "identity-admin": {"scheme": "http"},
-         "compute-api": {"scheme": "http"},
-         "image-api": {"scheme": "http"},
-         "image-registry": {"scheme": "http"},
-         "metering-api": {"scheme": "http"},
-         "volume-api": {"scheme": "http"},
-         "network-api": {"scheme": "http"}
-     },
-     "compute": {
-         "network": {"service_type": "quantum"},
-         "verbose": true,
-         "debug": true
-     },
-    "identity" : {
-      "admin_user" : "ksadmin",
-      "bind_interface" : "eth0",
-      "catalog" : {
-        "# backend" : "templated"
-      },
-      "debug" : true,
-      "rabbit_server_chef_role" : "os-ops-messaging",
-      "roles" : [
-        "admin",
-        "keystone_admin",
-        "keystone_service_admin",
-        "member",
-        "netadmin",
-        "sysadmin"
-      ],
-      "syslog" : {
-        "use" : false
-      },
-      "tenants" : [
-        "admin",
-        "service",
-        "demo"
-      ],
-      "token" : {
-        "# backend" : "memcache"
-      },
-      "users" : {
-        "ksadmin" : {
-          "password" : "ksadmin",
-          "default_tenant" : "admin",
-          "roles" : {
-            "admin" : [
-              "admin"
-            ],
-            "keystone_admin" : [
-              "admin"
-            ],
-            "keystone_service_admin" : [
-              "admin"
-            ]
-          }
+        "recipe[openstack-dashboard::server]"
+    ],
+    "postgresql": {
+        "password": {"postgres": "secret"},
+        "version": "9.2"
+    },
+    "openstack": {
+        "zypp": {"release": "openSUSE_12.3"},
+        "release": "grizzly",
+        "developer_mode": true,
+        "db": {
+            "service_type": "postgresql",
+            "port": "5432"
         },
-        "demo" : {
-          "password" : "demo",
-          "default_tenant" : "demo",
-          "roles" : {
-            "sysadmin" : [
-              "demo"
+        "memcache_servers": ["127.0.0.1:11211"],
+        "# old endpoints": {
+            "identity-api": {"scheme": "http"},
+            "identity-admin": {"scheme": "http"},
+            "compute-api": {"scheme": "http"},
+            "image-api": {"scheme": "http"},
+            "image-registry": {"scheme": "http"},
+            "metering-api": {"scheme": "http"},
+            "volume-api": {"scheme": "http"},
+            "network-api": {"scheme": "http"}
+        },
+        "endpoints": {
+            "compute-api": {
+                "host": "192.168.23.10",
+                "scheme": "http",
+                "port": "8774",
+                "path": "/v2/%(tenant_id)s"
+            },
+            "compute-ec2-admin": {
+                "host": "192.168.23.10",
+                "scheme": "http",
+                "port": "8773",
+                "path": "/services/Admin"
+            },
+            "compute-ec2-api": {
+                "host": "192.168.23.10",
+                "scheme": "http",
+                "port": "8773",
+                "path": "/services/Cloud"
+            },
+            "compute-xvpvnc": {
+                "host": "192.168.23.10",
+                "scheme": "http",
+                "port": "6081",
+                "path": "/console"
+            },
+            "compute-novnc": {
+                "host": "192.168.23.10",
+                "scheme": "http",
+                "port": "6080",
+                "path": "/vnc_auto.html"
+            },
+            "image-api": {
+                "host": "192.168.23.10",
+                "scheme": "http",
+                "port": "9292",
+                "path": "/v2"
+            },
+            "image-registry": {
+                "host": "192.168.23.10",
+                "scheme": "http",
+                "port": "9191",
+                "path": "/v2"
+            },
+            "identity-api": {
+                "host": "192.168.23.10",
+                "scheme": "http",
+                "port": "5000",
+                "path": "/v2.0"
+            },
+            "identity-admin": {
+                "host": "192.168.23.10",
+                "scheme": "http",
+                "port": "35357",
+                "path": "/v2.0"
+            },
+            "volume-api": {
+                "host": "192.168.23.10",
+                "scheme": "http",
+                "port": "8776",
+                "path": "/v1/%(tenant_id)s"
+            },
+            "metering-api": {
+                "host": "192.168.23.10",
+                "scheme": "http",
+                "port": "8777",
+                "path": "/v1"
+            },
+            "network-api": {
+                "host": "192.168.23.10",
+                "scheme": "http",
+                "port": "9696",
+                "path": "/v2"
+            }
+        },
+        "compute": {
+            "network": {"service_type": "quantum"},
+            "verbose": true,
+            "debug": true
+        },
+        "identity": {
+            "admin_user": "ksadmin",
+            "bind_interface": "eth0",
+            "catalog": {
+                "# backend": "templated"
+            },
+            "debug": true,
+            "rabbit_server_chef_role": "os-ops-messaging",
+            "roles": [
+                "admin",
+                "keystone_admin",
+                "keystone_service_admin",
+                "member",
+                "netadmin",
+                "sysadmin"
             ],
-            "netadmin" : [
-              "demo"
+            "syslog": {
+                "use": false
+            },
+            "tenants": [
+                "admin",
+                "service",
+                "demo"
             ],
-            "member" : [
-              "demo"
-            ]
-          }
+            "token": {
+                "# backend": "memcache"
+            },
+            "users": {
+                "ksadmin": {
+                    "password": "ksadmin",
+                    "default_tenant": "admin",
+                    "roles": {
+                        "admin": [
+                            "admin"
+                        ],
+                        "keystone_admin": [
+                            "admin"
+                        ],
+                        "keystone_service_admin": [
+                            "admin"
+                        ]
+                    }
+                },
+                "demo": {
+                    "password": "demo",
+                    "default_tenant": "demo",
+                    "roles": {
+                        "sysadmin": [
+                            "demo"
+                        ],
+                        "netadmin": [
+                            "demo"
+                        ],
+                        "member": [
+                            "demo"
+                        ]
+                    }
+                }
+            },
+            "verbose": true
+        },
+
+        "image": {
+            "verbose": true,
+            "debug": true
+        },
+        "dashboard": {
+            "use_ssl": false,
+            "debug": true
+        },
+        "block-storage": {
+            "verbose": true,
+            "debug": true
+        },
+        "network": {
+            "verbose": true,
+            "debug": true
         }
-      },
-      "verbose": true
+    },
+    "# new openstack": {
+        "auth": {
+            "validate_certs": false
+        },
+        "compute": {
+            "syslog": {
+                "use": false
+            },
+            "libvirt": {
+                "bind_interface": "eth0"
+            },
+            "novnc_proxy": {
+                "bind_interface": "eth0"
+            },
+            "xvpvnc_proxy": {
+                "bind_interface": "eth0"
+            },
+            "image_api_chef_role": "os-image",
+            "identity_service_chef_role": "os-identity",
+            "nova_setup_chef_role": "os-compute-api",
+            "rabbit_server_chef_role": "os-ops-messaging",
+            "ratelimit": {
+                "api": {
+                    "enabled": false
+                },
+                "volume": {
+                    "enabled": false
+                }
+            },
+            "network": {
+                "fixed_range": "10.0.0.0/8"
+            },
+            "networks": [
+            ]
+        },
+        "db": {
+            "bind_interface": "eth0",
+            "compute": {
+                "host": "10.0.3.10"
+            },
+            "identity": {
+                "host": "10.0.3.10"
+            },
+            "image": {
+                "host": "10.0.3.10"
+            },
+            "network": {
+                "host": "10.0.3.10"
+            },
+            "volume": {
+                "host": "10.0.3.10"
+            },
+            "dashboard": {
+                "host": "10.0.3.10"
+            },
+            "metering": {
+                "host": "10.0.3.10"
+            }
+        },
+        "developer_mode": true,
+        "endpoints": {
+            "compute-api": {
+                "host": "192.168.23.10",
+                "scheme": "http",
+                "port": "8774",
+                "path": "/v2/%(tenant_id)s"
+            },
+            "compute-ec2-admin": {
+                "host": "192.168.23.10",
+                "scheme": "http",
+                "port": "8773",
+                "path": "/services/Admin"
+            },
+            "compute-ec2-api": {
+                "host": "192.168.23.10",
+                "scheme": "http",
+                "port": "8773",
+                "path": "/services/Cloud"
+            },
+            "compute-xvpvnc": {
+                "host": "192.168.23.10",
+                "scheme": "http",
+                "port": "6081",
+                "path": "/console"
+            },
+            "compute-novnc": {
+                "host": "192.168.23.10",
+                "scheme": "http",
+                "port": "6080",
+                "path": "/vnc_auto.html"
+            },
+            "image-api": {
+                "host": "192.168.23.10",
+                "scheme": "http",
+                "port": "9292",
+                "path": "/v2"
+            },
+            "image-registry": {
+                "host": "192.168.23.10",
+                "scheme": "http",
+                "port": "9191",
+                "path": "/v2"
+            },
+            "identity-api": {
+                "host": "192.168.23.10",
+                "scheme": "http",
+                "port": "5000",
+                "path": "/v2.0"
+            },
+            "identity-admin": {
+                "host": "192.168.23.10",
+                "scheme": "http",
+                "port": "35357",
+                "path": "/v2.0"
+            },
+            "volume-api": {
+                "host": "192.168.23.10",
+                "scheme": "http",
+                "port": "8776",
+                "path": "/v1/%(tenant_id)s"
+            },
+            "metering-api": {
+                "host": "192.168.23.10",
+                "scheme": "http",
+                "port": "8777",
+                "path": "/v1"
+            },
+            "network-api": {
+                "host": "192.168.23.10",
+                "scheme": "http",
+                "port": "9696",
+                "path": "/v2"
+            }
+        },
+        "image": {
+            "api": {
+                "bind_interface": "eth0"
+            },
+            "debug": true,
+            "identity_service_chef_role": "os-identity",
+            "image_upload": true,
+            "rabbit_server_chef_role": "os-ops-messaging",
+            "registry": {
+                "bind_interface": "eth0"
+            },
+            "syslog": {
+                "use": false
+            },
+            "upload_image": {
+                "cirros": "http://hypnotoad/cirros-0.3.0-x86_64-disk.img"
+            },
+            "upload_images": [
+                "cirros"
+            ]
+        },
+        "memcached_servers": [
+            "10.0.3.10:11211"
+        ],
+        "mq": {
+            "bind_interface": "eth0",
+            "host": "10.0.3.10",
+            "user": "guest",
+            "vhost": "/nova"
+        }
     },
 
-     "image": {
-         "verbose": true,
-         "debug": true
-     },
-     "dashboard": {
-         "use_ssl": false,
-         "debug": true
-     },
-     "block-storage": {
-         "verbose": true,
-         "debug": true
-     },
-     "network": {
-         "verbose": true,
-         "debug": true
-     }
- },
- "nova": {
-     "ceilometer": {"reverse-proxy": false}
- }
+    "nova": {
+        "ceilometer": {"reverse-proxy": false}
+    }
 }
