@@ -4,44 +4,76 @@
 site 'http://community.opscode.com/api/v1'
 
 
-cookbook 'memcached'
+cookbook "memcached",
+  :path => "vendor/cookbooks/memcached"
+
+# local copies of dependent cookbooks
+cookbook "apt",
+  :path => "vendor/cookbooks/apt"
+cookbook "aws",
+  :path => "vendor/cookbooks/aws"
+cookbook "build-essential",
+  :path => "vendor/cookbooks/build-essential"
+cookbook "database",
+  :path => "vendor/cookbooks/database"
+cookbook "erlang",
+  :path => "vendor/cookbooks/erlang"
+cookbook "mysql",
+  :path => "vendor/cookbooks/mysql"
+cookbook "openssl",
+  :path => "vendor/cookbooks/openssl"
+cookbook "python",
+  :path => "vendor/cookbooks/python"
+cookbook "runit",
+  :path => "vendor/cookbooks/runit"
+cookbook "selinux",
+  :path => "vendor/cookbooks/selinux"
+cookbook "sysctl",
+  :path => "vendor/cookbooks/sysctl"
+cookbook "xfs",
+  :path => "vendor/cookbooks/xfs"
+cookbook "yum",
+  :path => "vendor/cookbooks/yum"
+
 
 cookbook 'postgresql',
-  :git => 'git://github.com/SUSE-Cloud/cookbook-postgresql.git'
+  :git => 'http://192.168.23.1/mirror/github.com/SUSE-Cloud/cookbook-postgresql.git'
 
 cookbook 'chef-solo-search',
-  :git => 'git://github.com/edelight/chef-solo-search.git'
+  :git => 'http://192.168.23.1/mirror/github.com/edelight/chef-solo-search.git'
 
 cookbook 'rabbitmq',
-  :git => 'git://github.com/opscode-cookbooks/rabbitmq.git'
+  :git => 'http://192.168.23.1/mirror/github.com/opscode-cookbooks/rabbitmq.git'
 
 cookbook 'apache2',
-  :git => 'git://github.com/SUSE-Cloud/cookbook-apache2.git'
+  :git => 'http://192.168.23.1/mirror/github.com/SUSE-Cloud/cookbook-apache2.git'
 
 cookbook 'openstack-ops-database',
-  :git => 'git://github.com/stackforge/cookbook-openstack-ops-database.git'
+  :git => 'http://192.168.23.1/mirror/github.com/stackforge/cookbook-openstack-ops-database.git'
 
 cookbook 'openstack-ops-messaging',
-  :git => 'git://github.com/stackforge/cookbook-openstack-ops-messaging.git'
+  :git => 'http://192.168.23.1/mirror/github.com/stackforge/cookbook-openstack-ops-messaging.git'
 
 cookbook 'openstack-common',
-  :git => 'git://github.com/stackforge/cookbook-openstack-common.git'
+  :git => 'http://192.168.23.1/mirror/github.com/stackforge/cookbook-openstack-common.git'
 
 cookbook 'openstack-identity',
-  :git => 'git://github.com/stackforge/cookbook-openstack-identity.git'
+  :git => 'http://192.168.23.1/mirror/github.com/stackforge/cookbook-openstack-identity.git'
 
 cookbook 'openstack-image',
-  :git => 'git://github.com/stackforge/cookbook-openstack-image.git'
+  :git => 'http://192.168.23.1/mirror/github.com/stackforge/cookbook-openstack-image.git'
 
 cookbook 'openstack-compute',
-  :git => 'git://github.com/stackforge/cookbook-openstack-compute.git'
+  :git => 'http://192.168.23.1/mirror/github.com/stackforge/cookbook-openstack-compute.git',
+  # before introducing run_list.expand
+  :ref => "b03944170afa253c216d0306750ac3ec136e3698"
 
 cookbook 'openstack-dashboard',
-  :git => 'git://github.com/stackforge/cookbook-openstack-dashboard.git'
+  :git => 'http://192.168.23.1/mirror/github.com/stackforge/cookbook-openstack-dashboard.git'
 cookbook 'openstack-block-storage',
-  :git => 'git://github.com/stackforge/cookbook-openstack-block-storage.git'
+  :git => 'http://192.168.23.1/mirror/github.com/stackforge/cookbook-openstack-block-storage.git'
 
 cookbook 'openstack-network',
   :git => 'file:///local/home-mvidner/svn/cookbooks/openstack-network'
 cookbook 'openstack-metering',
-  :git => 'git://github.com/stackforge/cookbook-openstack-metering.git'
+  :git => 'http://192.168.23.1/mirror/github.com/stackforge/cookbook-openstack-metering.git'
