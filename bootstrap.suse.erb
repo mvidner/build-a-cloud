@@ -83,6 +83,11 @@ EOF
 
 install() {
     zypper --non-interactive install rubygem-chef rubygem-treetop
+    # unconditionally enable gpg checks.
+    # I can't find the proper place to configure this :-(
+    sed -i -e '/def.gpg_checks/a return ""' \
+        /usr/lib64/ruby/gems/1.9.1/gems/chef-11.6.0/lib/chef/provider/package/zypper.rb
+
 }
 
 rpm -q rubygem-chef && exit
