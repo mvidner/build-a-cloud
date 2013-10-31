@@ -37,7 +37,7 @@ cookbook "yum",
 
 
 cookbook 'postgresql',
-  :git => 'http://192.168.23.1/mirror/github.com/SUSE-Cloud/cookbook-postgresql.git'
+  :git => 'file:///local/home-mvidner/svn/cookbooks/postgresql'
 
 cookbook 'chef-solo-search',
   :git => 'http://192.168.23.1/mirror/github.com/edelight/chef-solo-search.git'
