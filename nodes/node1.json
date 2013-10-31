@@ -46,7 +46,10 @@
         "version": "9.2"
     },
     "openstack": {
-        "zypp": {"release": "openSUSE_12.3"},
+        "zypp": {
+            "release": "openSUSE_12.3",
+            "uri": "http://192.168.23.1/mirror/download.opensuse.org/repositories/Cloud:/OpenStack:/%release%/%suse-release%/"
+        },
         "release": "grizzly",
         "developer_mode": true,
         "db": {

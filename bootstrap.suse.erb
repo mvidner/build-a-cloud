@@ -34,7 +34,7 @@ addrepokey() {
 addrepo() {
     REPO=$1
     REPOPATH=${REPO//:/:/}  # turn a:b:c into a:/b:/c
-    REPOURL=http://download.opensuse.org/repositories/${REPOPATH}/$(reponame)
+    REPOURL=http://192.168.23.1/mirror/download.opensuse.org/repositories/${REPOPATH}/$(reponame)
     REPOKEY=$2
 
     zypper repos --export - | grep --fixed-strings $REPOURL && return
