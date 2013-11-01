@@ -37,7 +37,7 @@ cookbook "yum",
 
 
 cookbook 'postgresql',
-  :git => 'http://github.com/mvidner/cookbook-postgresql.git',
+  :git => 'http://192.168.23.1/mirror/github.com/mvidner/cookbook-postgresql.git',
   :ref => "rubygem-pg"
 
 cookbook 'chef-solo-search',
