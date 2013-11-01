@@ -74,6 +74,8 @@ cookbook 'openstack-block-storage',
   :git => 'http://192.168.23.1/mirror/github.com/stackforge/cookbook-openstack-block-storage.git'
 
 cookbook 'openstack-network',
-  :git => 'file:///local/home-mvidner/svn/cookbooks/openstack-network'
+  :git => 'http://github.com/mvidner/cookbook-openstack-network.git',
+  :ref => "chef-solo"
+
 cookbook 'openstack-metering',
   :git => 'http://192.168.23.1/mirror/github.com/stackforge/cookbook-openstack-metering.git'
