@@ -220,8 +220,14 @@
             "debug": true
         },
         "network": {
-            "verbose": true,
-            "debug": true
+            "debug": true,
+            "platform": {
+                "quantum_packages": [
+                    "iptables",
+                    "openstack-quantum"
+                ]
+            },
+            "verbose": true
         }
     },
     "# new openstack": {
