@@ -37,7 +37,8 @@ cookbook "yum",
 
 
 cookbook 'postgresql',
-  :git => 'file:///local/home-mvidner/svn/cookbooks/postgresql'
+  :git => 'http://github.com/mvidner/cookbook-postgresql.git',
+  :ref => "rubygem-pg"
 
 cookbook 'chef-solo-search',
   :git => 'http://192.168.23.1/mirror/github.com/edelight/chef-solo-search.git'
