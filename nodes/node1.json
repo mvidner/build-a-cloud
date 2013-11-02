@@ -48,6 +48,7 @@
     "openstack": {
         "zypp": {
             "release": "openSUSE_12.3",
+            "repo-key": "D85F9316",
             "uri": "http://192.168.23.1/mirror/download.opensuse.org/repositories/Cloud:/OpenStack:/%release%/%suse-release%/"
         },
         "release": "grizzly",
