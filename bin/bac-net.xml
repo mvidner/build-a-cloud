@@ -1,0 +1,19 @@
+<network>
+<!--
+systemctl enable libvirtd.service
+rclibvirtd start
+
+sudo virsh net-define bac-net.xml
+sudo virsh net-start bac
+-->
+
+  <name>bac</name>
+  <forward mode='nat'/>
+  <bridge name='bacbr' stp='off' delay='0' />
+  <mac address='52:54:00:BA:B1:77'/>
+  <ip address='192.168.23.1' netmask='255.255.255.0'>
+    <dhcp>
+      <host mac='52:54:00:77:77:70' name='node1.example.com' ip='192.168.23.10' />
+    </dhcp>
+  </ip>
+</network>

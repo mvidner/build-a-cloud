@@ -1,0 +1,13 @@
+# -*- sh -*-
+# ". openrc" to initialize shell variables for openstack CLI
+
+SERVICE_HOST=${1-${NODE-node1}}
+
+export OS_AUTH_URL="http://${SERVICE_HOST}:5000/v2.0"
+export OS_TENANT_NAME=admin
+export OS_USERNAME=ksadmin
+# we set node[:openstack][:developer_mode] = true
+# so the password is the username
+export OS_PASSWORD=ksadmin
+
+AUTH_JSON="{\"auth\":{\"passwordCredentials\":{\"username\":\"$OS_USERNAME\",\"password\":\"$OS_PASSWORD\"},\"tenantName\":\"$OS_TENANT_NAME\"}}"

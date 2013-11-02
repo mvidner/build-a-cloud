@@ -1,0 +1,40 @@
+#!/usr/bin/env ruby
+
+# parse /var/log/zypp/history and selectively mirror just what was installed
+# assuming the skeleton of the repo is already mirrored and just the rpms
+# are missing
+
+REPOS = {
+  "openSUSE_12.3_OSS" => "http://download.opensuse.org/distribution/12.3/repo/oss/suse",
+  "openSUSE_12.3_Updates" => "http://download.opensuse.org/update/12.3/",
+  "Cloud:OpenStack:Grizzly" => "http://download.opensuse.org/repositories/Cloud:/OpenStack:/Grizzly/openSUSE_12.3/",
+  "devel:languages:ruby:extensions" => "http://download.opensuse.org/repositories/devel:/languages:/ruby:/extensions/openSUSE_12.3"
+}
+
+File.open "notfound", "a" do |nf|
+  File.open ARGV[0] do |f|
+    f.each_line do |line|
+      next if line =~ /^#/
+      timestamp, action, name, version, arch, user, repo, hash, rest = line.split "|"
+      next unless action == "install"
+      filename = "#{arch}/#{name}-#{version}.#{arch}.rpm"
+      url = REPOS[repo] + "/" + filename
+      puts url
+      localfile = url.sub("http://", "")
+      if File.exists? localfile
+        puts "EXISTS"
+        next
+      end
+      ok = system "wget", "-x", url
+      if ! ok
+        if $?.signaled?
+          puts "SIGNAL"
+          system "rm", localfile
+          exit
+        end
+        puts "NOTFOUND"
+        nf.puts url
+      end
+    end
+  end
+end

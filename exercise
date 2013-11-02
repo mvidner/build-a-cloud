@@ -1,0 +1,24 @@
+#! /bin/bash
+set -eu
+set -x
+
+# sourced openrc is assumed
+[ "$OS_AUTH_URL" ] || . openrc
+
+glance image-list
+# CIRROS_URL=https://launchpad.net/cirros/trunk/0.3.0/+download/cirros-0.3.0-i386-disk.img
+CIRROS_URL=http://192.168.23.1/mirror/launchpad.net/cirros/trunk/0.3.0/+download/cirros-0.3.0-i386-disk.img
+
+glance image-create \
+  --name=cirros --is-public=True --property vm_mode=hvm \
+  --disk-format=qcow2 --container-format=bare \
+  --copy-from $CIRROS_URL
+
+
+nova secgroup-add-rule default icmp -1 -1 0.0.0.0/0
+nova secgroup-add-rule default tcp 1 65535 0.0.0.0/0
+nova secgroup-add-rule default udp 1 65535 0.0.0.0/0
+
+nova keypair-add --pub_key ~/.ssh/id_rsa.pub testkey
+
+nova boot --image cirros --flavor 1 --key_name testkey testvm

@@ -1,0 +1,14 @@
+#! /bin/bash -x
+# a helper to start with a clean node
+set -eu
+
+if [ `id -u` != 0 ]; then
+  echo Should be root
+  exit 1
+fi
+
+DOMAIN=${1-jeos-123}
+
+virsh destroy $DOMAIN
+cp /var/lib/libvirt/images/{$DOMAIN-copy,$DOMAIN};
+virsh start $DOMAIN

@@ -1,0 +1,8 @@
+#! /bin/bash
+set -eu
+
+NODE=${1-node1}
+ssh-copy-id root@$NODE
+
+ssh root@$NODE 'zypper --non-interactive in curl ca-certificates-mozilla patch rsync
+zypper --non-interactive patch'

@@ -1,0 +1,15 @@
+#! /bin/bash -x
+set -eu
+
+NODE=${1-node1}
+ssh-copy-id root@$NODE
+
+if [ ! -f nodes/$NODE.json ]; then
+  cp nodes/node1.json nodes/$NODE.json
+fi
+
+# redirect base repos from the internet to the local mirror
+ssh root@$NODE "sed -i -e 's@http://download.opensuse.org@http://192.168.23.1/mirror/download.opensuse.org@' /etc/zypp/repos.d/*repo"
+
+knife bootstrap --template-file bootstrap.suse.erb --user root $NODE
+knife solo cook root@$NODE
