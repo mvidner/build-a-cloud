@@ -1,5 +1,10 @@
+build-a-cloud
+=============
+
+Build a Cloud with OpenStack
+
 soksolok
-========
+--------
 
 soksolok stands for SUSE OpenStack knife-solo kitchen. It describes a chef-solo deployment using [SUSE-Cloud](https://github.com/SUSE-Cloud) cookbooks.
 
